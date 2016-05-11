@@ -48,7 +48,7 @@ function getNewActivityID() {
   return new Promise((resolve, reject) => {
     try {
       // TODO this will be replaced by a flake id
-      resolve(uuid.v1)
+      resolve(uuid.v1())
     } catch (err) {
       reject(err)
     }
