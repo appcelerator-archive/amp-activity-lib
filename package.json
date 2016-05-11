@@ -2,7 +2,7 @@
   "name": "amp-activity-lib",
   "version": "0.0.1",
   "description": "Update and query AMP activities",
-  "main": "./dist",
+  "main": "dist",
   "scripts": {
     "test": "mocha ./dist/test",
     "lint": "eslint src",
@@ -10,9 +10,9 @@
     "build": "atomiq make babel",
     "postinstall": "npm run build"
   },
-  "main": "dist",
   "dependencies": {
     "atomiq": "^1.0.6",
+    "atomiq-cli": "^1.0.0-alpha.20",
     "babel-polyfill": "^6.3.14",
     "bunyan": "^1.8.1",
     "consul": "^0.25.0",
