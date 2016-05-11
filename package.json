@@ -10,7 +10,7 @@
     "build": "atomiq make babel",
     "postinstall": "npm run build"
   },
-  "main": "lib",
+  "main": "dist",
   "dependencies": {
     "atomiq": "^1.0.6",
     "babel-polyfill": "^6.3.14",
