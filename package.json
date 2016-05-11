@@ -2,10 +2,13 @@
   "name": "amp-activity-lib",
   "version": "0.0.1",
   "description": "Update and query AMP activities",
+  "main": "./dist",
   "scripts": {
     "test": "mocha ./dist/test",
     "lint": "eslint src",
-    "format": "esformatter -i 'src/**/*.js'"
+    "format": "esformatter -i 'src/**/*.js'",
+    "build": "atomiq make babel",
+    "postinstall": "npm run build"
   },
   "main": "lib",
   "dependencies": {
