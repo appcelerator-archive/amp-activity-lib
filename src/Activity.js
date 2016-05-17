@@ -1,9 +1,8 @@
-import consul from 'consul'
-import { merge } from 'ramda'
-import uuid from 'uuid'
+import Consul from 'amp-consul-lib';
+import { merge } from 'ramda';
+import uuid from 'uuid';
 
 export default class Activity {
-
   static async newActivity(name) {
     let activity = new Activity()
     activity.name = name
@@ -26,6 +25,7 @@ export default class Activity {
 
   constructor() {
     this.data = {}
+    this.consul = new Consul()
   }
 
   async save(data) {
@@ -56,13 +56,6 @@ function getNewActivityID() {
 }
 
 async function save(id, value) {
-  const options = {
-    host: 'consul',
-    port: '8500',
-    promisify: true
-  }
-  const c = consul(options)
-
   // TODO: spec key-value space schema
-  await c.kv.set(id, value)
+  await this.consul.set(id, value)
 }

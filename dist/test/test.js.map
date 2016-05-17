@@ -1,1 +1,0 @@
-{"version":3,"sources":["test.js"],"names":[],"mappings":";;AAAA;;AACA;;AAEA;;;;;;AAEA,SAAS,OAAT,EAAkB,YAAW,CAE5B,CAFD","file":"test.js","sourcesContent":["import 'babel-polyfill';\nimport 'source-map-support/register';\n\nimport assert from 'assert';\n\ndescribe('tests', function() {\n\n});\n"]}
