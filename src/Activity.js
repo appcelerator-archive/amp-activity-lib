@@ -1,4 +1,4 @@
-import Consul from 'amp-consul-lib';
+import { Consul } from 'amp-consul-lib';
 import { merge } from 'ramda';
 import uuid from 'uuid';
 
