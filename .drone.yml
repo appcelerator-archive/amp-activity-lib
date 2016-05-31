@@ -1,10 +1,14 @@
 build:
   sut:
     image: appcelerator/docker-toolbox-node
+    environment:
+      DOCKER_HUB_LOGIN: $$DOCKER_HUB_LOGIN
+      DOCKER_HUB_PASSWORD: $$DOCKER_HUB_PASSWORD
+      DOCKER_HUB_EMAIL: $$DOCKER_HUB_EMAIL
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock
     commands:
-    - docker login -u "$$DOCKER_HUB_LOGIN" -p "$$DOCKER_HUB_PASSWORD" -e "$$DOCKER_HUB_EMAIL"
+    - docker login -u "$DOCKER_HUB_LOGIN" -p "$DOCKER_HUB_PASSWORD" -e "$DOCKER_HUB_EMAIL"
     - ./drone.sh
 
 cache:
