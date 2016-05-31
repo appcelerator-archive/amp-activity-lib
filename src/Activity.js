@@ -1,6 +1,6 @@
-import { Consul } from 'amp-consul-lib';
-import { merge } from 'ramda';
-import uuid from 'uuid';
+import { Consul } from 'amp-consul-lib'
+import { merge } from 'ramda'
+import uuid from 'uuid'
 
 export default class Activity {
   static async newActivity(name) {
@@ -30,7 +30,7 @@ export default class Activity {
 
   async save(data) {
     this.data = merge(this.data, data || {})
-    await save(this.id, {
+    await this._save(this.id, {
       name: this.name,
       state: this.state,
       data: this.data
@@ -39,9 +39,13 @@ export default class Activity {
 
   async saveState(state, data) {
     this.state = state
-    return await save(data)
+    return await this._save(data)
   }
 
+  async _save(id, value) {
+    // TODO: spec key-value space schema
+    await this.consul.set(id, JSON.stringify(value))
+  }
 }
 
 function getNewActivityID() {
@@ -53,9 +57,4 @@ function getNewActivityID() {
       reject(err)
     }
   })
-}
-
-async function save(id, value) {
-  // TODO: spec key-value space schema
-  await this.consul.set(id, value)
 }
