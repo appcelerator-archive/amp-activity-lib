@@ -13,23 +13,6 @@ cache:
   mount:
     - .git
 
-#publish:
-#  docker:
-#    username: $$DOCKER_HUB_LOGIN
-#    password: $$DOCKER_HUB_PASSWORD
-#    email: $$DOCKER_HUB_EMAIL
-#    repo: appcelerator/amp-test
-#    dockerfile: Dockerfile
-#    tag: $$BRANCH
-##    load: docker/image.tar
-##    save:
-##      destination: docker/image.tar
-##      tag: $$BRANCH
-#    when:
-#      success: true
-#      event: push
-#      repo: appcelerator/amp-test
-
 notify:
   slack:
     webhook_url: https://hooks.slack.com/services/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

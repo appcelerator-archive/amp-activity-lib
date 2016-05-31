@@ -7,16 +7,8 @@ services:
     command: "npm run test"
     environment:
       DEBUG: app*
-      AMP_SERVICE_URL: "http://amp-service:3000"
-      AMP_LOG_URL: "http://amp-log:3000"
-      AMP_CONSUL_URL: "http://consul:8500"
-      AMP_ZOOKEEPER_ADDR: "zookeeper:2181"
-      AMP_COMPOSE_FILE: "docker-compose.drone.yml"
     volumes:
       - ./src:/usr/src/app/src
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ~/.ssh:/root/.ssh
-      - ~/.git:/root/.git
     depends_on:
       - consul
 
