@@ -7,8 +7,6 @@ build:
     - docker login -u "$$DOCKER_HUB_LOGIN" -p "$$DOCKER_HUB_PASSWORD" -e "$$DOCKER_HUB_EMAIL"
     - ./drone.sh
 
-debug: true
-
 cache:
   mount:
     - .git
