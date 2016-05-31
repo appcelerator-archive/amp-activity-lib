@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "sources": [
+    "Activity.js"
+  ],
+  "names": [],
+  "mappings": ";;;;;;;;AAAA;;AACA;;AACA;;;;;;;;IAEqB,Q;;;gCACM,I;UACnB,Q;;;;;AAAA,sB,GAAW,IAAI,QAAJ,E;;AACf,uBAAS,IAAT,GAAgB,IAAhB;;8CACoB,kB;;;AAApB,uBAAS,E;+CACF,Q;;;;;;;;;;;2BAGW,E;UACd,Q;;;;;AAAA,sB,GAAW,IAAI,QAAJ,E;;AACf,uBAAS,EAAT,GAAc,EAAd;;;;;;;;gDAQO,Q;;;;;;;;;;;AAGT,sBAAc;AAAA;;AACZ,SAAK,IAAL,GAAY,EAAZ;AACA,SAAK,MAAL,GAAc,0BAAd;AACD;;;;yBAEU,I;;;;;AACT,mBAAK,IAAL,GAAY,kBAAM,KAAK,IAAX,EAAiB,QAAQ,EAAzB,CAAZ;;8CACM,KAAK,KAAL,CAAW,KAAK,EAAhB,EAAoB;AACxB,sBAAM,KAAK,IADa;AAExB,uBAAO,KAAK,KAFY;AAGxB,sBAAM,KAAK;AAHa,eAApB,C;;;;;;;;;;;8BAOQ,K,EAAO,I;;;;;AACrB,mBAAK,KAAL,GAAa,KAAb;;8CACa,KAAK,KAAL,CAAW,IAAX,C;;;;;;;;;;;;;;0BAGH,E,EAAI,K;;;;;;8CAER,KAAK,MAAL,CAAY,GAAZ,CAAgB,EAAhB,EAAoB,KAAK,SAAL,CAAe,KAAf,CAApB,C;;;;;;;;;;;;;;kBA1CW,Q;;;AA8CrB,SAAS,gBAAT,GAA4B;AAC1B,SAAO,IAAI,OAAJ,CAAY,UAAC,OAAD,EAAU,MAAV,EAAqB;AACtC,QAAI;;AAEF,cAAQ,eAAK,EAAL,EAAR;AACD,KAHD,CAGE,OAAO,GAAP,EAAY;AACZ,aAAO,GAAP;AACD;AACF,GAPM,CAAP;AAQD",
+  "file": "Activity.js",
+  "sourcesContent": [
+    "import { Consul } from 'amp-consul-lib'\nimport { merge } from 'ramda'\nimport uuid from 'uuid'\n\nexport default class Activity {\n  static async newActivity(name) {\n    let activity = new Activity()\n    activity.name = name\n    activity.id = await getNewActivityID()\n    return activity\n  }\n\n  static async fromID(id) {\n    let activity = new Activity()\n    activity.id = id\n\n    // TODO implement\n    /*\n    let { state, name } = await getActivity(id)\n    activity.state = state\n    activity.name = name\n    */\n    return activity\n  }\n\n  constructor() {\n    this.data = {}\n    this.consul = new Consul()\n  }\n\n  async save(data) {\n    this.data = merge(this.data, data || {})\n    await this._save(this.id, {\n      name: this.name,\n      state: this.state,\n      data: this.data\n    })\n  }\n\n  async saveState(state, data) {\n    this.state = state\n    return await this._save(data)\n  }\n\n  async _save(id, value) {\n    // TODO: spec key-value space schema\n    await this.consul.set(id, JSON.stringify(value))\n  }\n}\n\nfunction getNewActivityID() {\n  return new Promise((resolve, reject) => {\n    try {\n      // TODO this will be replaced by a flake id\n      resolve(uuid.v1())\n    } catch (err) {\n      reject(err)\n    }\n  })\n}\n"
+  ]
+}
