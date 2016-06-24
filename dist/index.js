@@ -8,9 +8,10 @@ var _Activity = require('./Activity');
 
 Object.defineProperty(exports, 'Activity', {
   enumerable: true,
-  get: function get() {
+  get: function() {
     return _interopRequireDefault(_Activity).default;
   }
 });
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+//# sourceMappingURL=index.js.map

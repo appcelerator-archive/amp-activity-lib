@@ -244,4 +244,4 @@ module.exports = {
       "never"
     ]
   }
-};
+}
