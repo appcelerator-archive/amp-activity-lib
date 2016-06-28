@@ -1,7 +1,5 @@
 'use strict';
 
-require('babel-polyfill');
-
 var _chai = require('chai');
 
 var _chai2 = _interopRequireDefault(_chai);
@@ -18,19 +16,39 @@ var _ampConsulLib = require('amp-consul-lib');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var expect = _chai2.default.expect;
+function _asyncToGenerator(fn) {
+  return function() {
+    var gen = fn.apply(this, arguments);
+    return new Promise(function(resolve, reject) {
+      function step(key, arg) {
+        try {
+          var info = gen[key](arg);
+          var value = info.value;
+        } catch (error) {
+          reject(error);
+          return;
+        }
+        if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function(value) { return step("next", value); }, function(err) { return step("throw", err); }); }
+      }
+
+      return step("next");
+    });
+  };
+}
+
+const expect = _chai2.default.expect;
 
 function sleep(delayInSeconds) {
-  return new Promise(function(resolve) {
-    setTimeout(function() {
+  return new Promise(resolve => {
+    setTimeout(() => {
       resolve();
     }, delayInSeconds * 1000);
   });
 }
 
 function consulHealthCheck() {
-  return new Promise(function(resolve, reject) {
-    _unirest2.default.get('http://consul:8500/v1/health/checks/consul').end(function(response) {
+  return new Promise((resolve, reject) => {
+    _unirest2.default.get('http://consul:8500/v1/health/checks/consul').end(response => {
       if (response.error) {
         return reject(response.error);
       }
@@ -43,101 +61,53 @@ function consulHealthCheck() {
 }
 
 describe('Activity', function() {
-  var _this = this;
+  const consul = new _ampConsulLib.Consul();
 
-  var consul = new _ampConsulLib.Consul();
+  before('Wait for consul', (() => {
+    var ref = _asyncToGenerator(function*(done) {
+      this.timeout(10 * 1000);
 
-  before('Wait for consul', function _callee(done) {
-    var success, i;
-    return regeneratorRuntime.async(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            this.timeout(10 * 1000);
-
-            success = false;
-            i = 0;
-
-          case 3:
-            if (!(i < 10)) {
-              _context.next = 18;
-              break;
-            }
-
-            _context.prev = 4;
-            _context.next = 7;
-            return regeneratorRuntime.awrap(consulHealthCheck());
-
-          case 7:
-            success = true;
-            return _context.abrupt('break', 18);
-
-          case 11:
-            _context.prev = 11;
-            _context.t0 = _context['catch'](4);
-            _context.next = 15;
-            return regeneratorRuntime.awrap(sleep(1));
-
-          case 15:
-            i++;
-            _context.next = 3;
-            break;
-
-          case 18:
-
-            if (success) {
-              done();
-            } else {
-              done('Timed out waiting for consul');
-            }
-
-          case 19:
-          case 'end':
-            return _context.stop();
+      let success = false;
+      for (let i = 0; i < 10; i++) {
+        try {
+          yield consulHealthCheck();
+          success = true;
+          break;
+        } catch (err) {
+          // Ignore error and wait
+          yield sleep(1);
         }
       }
-    }, null, this, [[4, 11]]);
-  });
 
-  it('details should be available in consul after creation', function _callee2(done) {
-    var data, activity, value;
-    return regeneratorRuntime.async(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            _context2.prev = 0;
-            data = { test: 'data' };
-            _context2.next = 4;
-            return regeneratorRuntime.awrap(_Activity2.default.newActivity('test'));
-
-          case 4:
-            activity = _context2.sent;
-            _context2.next = 7;
-            return regeneratorRuntime.awrap(activity.save(data));
-
-          case 7:
-            _context2.next = 9;
-            return regeneratorRuntime.awrap(consul.get(activity.id));
-
-          case 9:
-            value = _context2.sent;
-
-            expect(JSON.parse(value.Value).data).to.deep.equal(data);
-            done();
-            _context2.next = 17;
-            break;
-
-          case 14:
-            _context2.prev = 14;
-            _context2.t0 = _context2['catch'](0);
-
-            done(_context2.t0);
-
-          case 17:
-          case 'end':
-            return _context2.stop();
-        }
+      if (success) {
+        done();
+      } else {
+        done('Timed out waiting for consul');
       }
-    }, null, _this, [[0, 14]]);
-  });
+    });
+
+    return function(_x) {
+      return ref.apply(this, arguments);
+    };
+  })());
+
+  it('details should be available in consul after creation', (() => {
+    var ref = _asyncToGenerator(function*(done) {
+      try {
+        const data = { test: 'data' };
+        const activity = yield _Activity2.default.newActivity('test');
+        yield activity.save(data);
+        const value = yield consul.get(activity.id);
+        expect(JSON.parse(value.Value).data).to.deep.equal(data);
+        done();
+      } catch (err) {
+        done(err);
+      }
+    });
+
+    return function(_x2) {
+      return ref.apply(this, arguments);
+    };
+  })());
 });
+//# sourceMappingURL=index.js.map

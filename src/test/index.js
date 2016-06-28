@@ -1,4 +1,4 @@
-import 'babel-polyfill'
+import 'source-map-support/register'
 import chai from 'chai'
 import unirest from 'unirest'
 import Activity from '../Activity'
