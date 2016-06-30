@@ -4,6 +4,7 @@
   "description": "Update and query AMP activities",
   "scripts": {
     "prepublish": "npm run build",
+    "postinstall": "npm run build",
     "build": "cp -r src dist && babel src -d dist --source-maps",
     "babel": "babel-node src/app.js",
     "test": "mocha --compilers js:babel-register src/test",
